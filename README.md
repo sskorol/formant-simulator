@@ -1,5 +1,10 @@
 ## Formant Turtlebot Simulator
 
+### Prerequisites
+
+- Install [Docker](https://docs.docker.com/engine/install/ubuntu) and [Compose](https://docs.docker.com/compose/install)
+- Install **jq**: `sudo apt-get install jq`
+
 ### Installation
 
 ```shell
