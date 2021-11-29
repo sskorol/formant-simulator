@@ -13,7 +13,7 @@ git clone https://github.com/sskorol/formant-simulator.git && cd formant-simulat
 mv example.env .env && nano .env
 ```
 
-Ajust `FORMANT_EMAIL` / `FORMANT_PASSWORD` with your Formant credentials. The other fields will be populated automatically.
+Adjust `FORMANT_EMAIL` / `FORMANT_PASSWORD` with your Formant credentials. The other fields will be populated automatically.
 
 ### Running
 
