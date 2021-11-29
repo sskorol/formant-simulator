@@ -1,0 +1,51 @@
+version: "3.8"
+
+networks:
+  formant:
+    driver: bridge
+
+volumes:
+  catkin_ws:
+
+services:
+  ros-master:
+    container_name: ros-master
+    image: ros:melodic-ros-core
+    command: stdbuf -o L roscore
+    networks:
+      - formant
+    restart: always
+
+  formant-agent:
+    container_name: formant-agent
+    image: formant/agent:ros-melodic
+    restart: always
+    user: $FORMANT_AGENT_USER
+    group_add:
+      - audio
+      - video
+    env_file:
+      - .env
+    ports:
+      - "5501:5501"
+      - "5502:5502"
+    volumes:
+      - "/var/lib/formant:/var/lib/formant"
+      - "/usr/bin/docker:/usr/bin/docker"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "catkin_ws:/catkin_ws"
+    networks:
+      - formant
+
+  turtlebot:
+    container_name: turtlebot
+    image: formant/turtlebot
+    volumes:
+      - "catkin_ws:/catkin_ws"
+    env_file:
+      - .env
+    devices:
+      - "/dev/snd:/dev/snd"
+    networks:
+      - formant
+    restart: always
