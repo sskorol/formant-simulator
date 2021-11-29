@@ -4,6 +4,7 @@
 
 - Install [Docker](https://docs.docker.com/engine/install/ubuntu) and [Compose](https://docs.docker.com/compose/install)
 - Install **jq**: `sudo apt-get install jq`
+- Add Formant device: from the burger menu select Settings -> Devices -> Add device
 
 ### Installation
 
