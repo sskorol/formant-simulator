@@ -1,0 +1,61 @@
+version: "3.8"
+
+networks:
+  formant:
+    driver: bridge
+
+volumes:
+  catkin_ws:
+
+services:
+  ros-master:
+    container_name: ros-master
+    image: ros:melodic-ros-core
+    command: stdbuf -o L roscore
+    networks:
+      - formant
+    restart: always
+
+  formant-agent:
+    container_name: formant-agent
+    image: formant/agent:ros-melodic
+    restart: always
+    user: $FORMANT_AGENT_USER
+    devices:
+      - /dev/video0:/dev/video0
+    group_add:
+      - audio
+      - video
+    env_file:
+      - .env
+    ports:
+      - "5501:5501"
+      - "5502:5502"
+    volumes:
+      - "/var/lib/formant:/var/lib/formant"
+      - "/usr/bin/docker:/usr/bin/docker"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "catkin_ws:/catkin_ws"
+    networks:
+      - formant
+
+  ros2-cam:
+    container_name: ros2-cam
+    image: sskorol/ros2-camera-node:foxy
+    devices:
+      - /dev/video0:/dev/video0
+    group_add:
+      - audio
+      - video
+    networks:
+      - formant
+    restart: always
+
+  formant-adapter:
+    container_name: formant-adapter
+    image: sskorol/ros2-formant-adapter:foxy
+    volumes:
+      - "/var/lib/formant:/var/lib/formant"
+    networks:
+      - formant
+    restart: always
